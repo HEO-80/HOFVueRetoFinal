@@ -2,12 +2,7 @@
   <div id="app">
     <Navbar></Navbar>
 
-    <div>
-      <b-navbar variant="faded" type="light">
-        <b-navbar-brand href="#"> </b-navbar-brand>
-      </b-navbar>
-    </div>
-
+    
 
     <div id="nav">
       <router-link to="/">Products</router-link> |

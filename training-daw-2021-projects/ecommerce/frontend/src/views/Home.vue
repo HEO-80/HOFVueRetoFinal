@@ -2,13 +2,7 @@
   <div class="home">
     <h1>Listado de productos</h1>
 
-    <div>
-      <!-- Image and text -->
-      <b-navbar variant="faded" type="light">
-        <b-navbar-brand href="#"> </b-navbar-brand>
-      </b-navbar>
-    </div>
-
+ 
     <div id="nav">
       <router-link to="/">Products</router-link> |
       <router-link to="/products/:id">Product</router-link> |
@@ -55,10 +49,10 @@
 
               <div class="buttonsProduct" style="text-align: center">
                 <a>
-                  <b-button @click="addToCart" variant="outline-primary">Cesta+</b-button>
+                  <button @click="addToCart(product.id, product.name, product.price)" variant="outline-primary">Cesta+</button>
                 </a>
                 <a>
-                  <b-button @click="quitCart" variant="danger">Cesta-</b-button>
+                  <button @click="removeProduct" variant="danger">Cesta-</button>
                 </a>
               </div>
             </div>
@@ -78,7 +72,7 @@
           :Price="product.price"
           :Image="product.mainImage"
         />
-        <div></div>
+        
       </main>
     </div>
     <hr />
@@ -87,6 +81,7 @@
 </template>
 
 <script>
+
 import CartBox from "@/components/Cart/CartBox.vue";
 import api_url from "../utils/api";
 
@@ -108,13 +103,28 @@ export default {
     };
   },
   methods: {
-    addtoCart(productId, productName, productPrice) {
+    addToCart(productId, productName, productPrice) {
       fetch(api_url("/cart/"), {
         method: "POST",
         body: JSON.stringify({
           productId: productId,
           productName: productName,
           quantity: 1,
+          productPrice: productPrice,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+    },
+    removeProduct(id, quantity, productId, productName, productPrice) {
+      fetch(api_url("/cart/" + id), {
+        method: "DELETE",
+        body: JSON.stringify({
+          productId: productId,
+          productName: productName,
+          quantity: quantity,
           productPrice: productPrice,
         }),
         headers: {

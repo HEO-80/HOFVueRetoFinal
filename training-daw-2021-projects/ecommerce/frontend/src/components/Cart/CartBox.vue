@@ -9,10 +9,10 @@
       <h5>cantidad</h5>
 
      
-      <b-button variant="success">Realizar Pedido</b-button>
+      <button variant="success"> <router-link to="/cart">Realizar Pedido</router-link></button>
      
 
-      <b-button variant="danger">Borrar Cesta</b-button>
+      <button variant="danger">Borrar Cesta</button>
     </b-container>
   </div>
 </template>
@@ -20,6 +20,7 @@
 <script>
 export default {};
 </script>
+
 <style scoped>
 .carrito {
   width: 240px;

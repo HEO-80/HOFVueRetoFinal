@@ -1,14 +1,8 @@
-<template>
+div<template>
   <div class="cart">
     <div>
       <h1>Carrito</h1>
 
-      <div>
-        <!-- Image and text -->
-        <b-navbar variant="faded" type="light">
-          <b-navbar-brand href="#"> </b-navbar-brand>
-        </b-navbar>
-      </div>
 
       <div id="nav">
         <router-link to="/">Products</router-link> |
@@ -16,75 +10,74 @@
         <router-link to="/cart">Cart</router-link> |
         <router-link to="/orders">Orders</router-link>
       </div>
-
- 
-        <b-card
-          title="Card Title"
-          img-src="https://picsum.photos/600/300/?image=25"
-          img-alt="Image"
-          img-top
-          tag="article"
-          style="max-width: 20rem"
-          class="mb-2"
-        >
-          <b-card-text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </b-card-text>
-          <b-button href="#" variant="primary">Go somewhere</b-button>
-        </b-card>
     
+      <CartDetail  v-for="product in cart"
+          :key="product.id"
+          :product="product">
 
-      <div
-        class="divsProduct"
-        v-for="product in products"
-        v-bind:key="product.id"
-      >
-        <div class="titleProduct">
-          <span>
-            <router-link :to="{ name: 'Product', params: { id: product.id } }">
-              {{ product.name }}
-            </router-link>
-          </span>
-        </div>
+         
+      </CartDetail>
 
-        <div class="divImgProduct">
-          <img :src="product.mainImage" alt="holaxd" width="220" height="220" />
-        </div>
+       
+     
 
-        <div class="price">
-          <span class="bodyStyle">
-            {{ product.price }}
-          </span>
-        </div>
+      
 
-        <div class="description">
-          <span class="bodyStyle">
-            {{ product.short }}
-          </span>
-        </div>
-      </div>
-  
 
-      <div></div>
+
     </div>
   </div>
 </template>
 
 <script>
+
+import CartDetail from "@/components/Cart/CartDetail.vue";
+import api_url from "../utils/api";
+
 export default {
   name: "Cart",
-  components: {},
+
+  components: {
+    CartDetail
+
+
+  },
   created() {
-    fetch("http://localhost:3000/products")
+    fetch("http://localhost:3000/cart/")
       .then((result) => result.json())
-      .then((data) => (this.products = data));
+      .then((data) => (this.cart = data));
   },
 
   data() {
     return {
-      products: [],
+      cart: [],
     };
+  },
+ methods: {
+    addtoCart(productId, productName, productPrice) {
+      fetch(api_url("/cart/"), {
+        method: "POST",
+        body: JSON.stringify({
+          productId: productId,
+          productName: productName,
+          quantity: 1,
+          productPrice: productPrice,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+    },
+      removeProduct(id) {
+      fetch(api_url("/cart/" + id), {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+    },
   },
 };
 </script>
